@@ -10,20 +10,45 @@ SQL::Phrasebook::Format - A sample pod document
 
 =head1 DESCRIPTION
 
+Phrasebook format:
+    
+    ----------
+    query_key:
+    ----------
+    
+    SELECT * FROM Table WHERE Field = [$ value $]
+    
+    ----------
+    list_key:
+    ----------
+    
+    SELECT * FROM Table WHERE Field IN [@ values @]
+    
+    -------
+    insert:
+    -------
+    
+    INSERT INTO Table (Field1, Field2, Field3) 
+    VALUES ([$ value1 $], [$ value2 $], [$ value3 $])
+    
+    #comment
+    -also a comment
+    
+    #use fragments
+    
+    --------------
+    select_fields:
+    --------------
+    
+    SELECT Field1, Field2, Field3 FROM Table
+    
+    -------
+    select:
+    -------
+    
+    [* select_fields *] WHERE Field1 = [$ value $]
 
-=head2 An Example List
-
-=over 4
-
-=item * This is a bulleted list.
-
-=item * Here's another item.
-
-=back
-
-=begin html
-
-=end html
+=cut
 
 =head1 SEE ALSO
 
