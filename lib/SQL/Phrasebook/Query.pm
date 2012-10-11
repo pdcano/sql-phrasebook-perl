@@ -3,6 +3,18 @@ package SQL::Phrasebook::Query;
 use strict;
 use warnings;
 
+use base qw(SQL::Phrasebook::Object);
+
+sub initialize {
+    my $self = shift;
+    my ( $statement, @params ) = @_;
+    
+    $self->statement( $statement || '' );
+    $self->params( @params );
+    
+    return $_[0];
+}
+
 sub statement {
     my $self = shift; 
 
@@ -32,35 +44,6 @@ sub execute {
     $sth->execute( $self->params ) || die "Could not execute statement";
 
     return $sth;
-}
-
-
-###############################################################################
-# new / basic_new / initialize
-###############################################################################
-
-sub initialize {
-    my $self = shift;
-    my ( $statement, @params ) = @_;
-    
-    $self->statement( $statement || '' );
-    $self->params( @params );
-    
-    return $_[0];
-}
-
-sub new {
-    my $class = shift;
-    
-    my $self = $class->basic_new;
-    
-    $self->initialize(@_);
-    
-    return $self;
-}
-
-sub basic_new {
-    return bless( {}, $_[0] );
 }
 
 1;

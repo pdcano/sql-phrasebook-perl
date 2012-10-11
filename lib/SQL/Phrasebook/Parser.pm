@@ -3,6 +3,8 @@ package SQL::Phrasebook::Parser;
 use strict;
 use warnings;
 
+use base qw(SQL::Phrasebook::Object);
+
 sub parse {
     my $class = shift;
     my $buffer = shift;
@@ -110,28 +112,6 @@ sub process_dynamic_query_params {
     }
     
     return $self;
-}
-
-###############################################################################
-# new / basic_new / initialize
-###############################################################################
-
-sub initialize {
-    return $_[0];
-}
-
-sub new {
-    my $class = shift;
-    
-    my $self = $class->basic_new;
-    
-    $self->initialize(@_);
-    
-    return $self;
-}
-
-sub basic_new {
-    return bless( {}, $_[0] );
 }
 
 1;

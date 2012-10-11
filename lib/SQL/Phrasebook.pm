@@ -3,8 +3,23 @@ package SQL::Phrasebook;
 use strict;
 use warnings;
 
+use base qw(SQL::Phrasebook::Object::Singleton);
+
 use SQL::Phrasebook::Query;
 use SQL::Phrasebook::Parser;
+
+sub initialize {
+    my $self = shift;
+
+    no strict 'refs';
+
+    my $class = ref $self;
+    my $parser = SQL::Phrasebook::Parser->parse_file( \*{ "$class\::DATA" } );
+
+    $self->{catalog} = $parser->result;
+    
+    return $self;
+}
 
 sub load {
     shift->instance( @_ );
@@ -42,45 +57,6 @@ sub get_param_list {
     my ( $qparams, $q ) = @_;
     
     return map { ref $_ eq 'ARRAY' ? @$_ : $_ } @{ $qparams }{ @{ $q->{ params } } }
-}
-
-###############################################################################
-# new / basic_new / initialize (singleton)
-###############################################################################
-
-sub initialize {
-    my $self = shift;
-
-    no strict 'refs';
-
-    my $class = ref $self;
-    my $parser = SQL::Phrasebook::Parser->parse_file( \*{ "$class\::DATA" } );
-
-    $self->{catalog} = $parser->result;
-    
-    return $self;
-}
-
-sub new {
-    return shift->instance( @_ );
-}
-
-sub instance {
-    my $class = shift;
-
-    no strict 'refs';
-    my $instance = \${ "$class\::_instance" };
-    
-    return $$instance if defined $$instance;
-    
-    $$instance = $class->basic_new();
-    $$instance->initialize( @_ );
-    
-    return $$instance;
-}
-
-sub basic_new {
-    return bless( {}, $_[0] );
 }
 
 1;
