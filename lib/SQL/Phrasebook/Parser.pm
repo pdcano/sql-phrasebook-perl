@@ -3,7 +3,7 @@ package SQL::Phrasebook::Parser;
 use strict;
 use warnings;
 
-use base qw(SQL::Phrasebook::Object);
+use base qw(SQL::Phrasebook::Base);
 
 sub parse {
     my $class = shift;

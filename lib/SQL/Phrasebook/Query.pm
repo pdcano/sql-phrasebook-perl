@@ -3,7 +3,7 @@ package SQL::Phrasebook::Query;
 use strict;
 use warnings;
 
-use base qw(SQL::Phrasebook::Object);
+use base qw(SQL::Phrasebook::Base);
 
 sub initialize {
     my $self = shift;

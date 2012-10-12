@@ -3,7 +3,7 @@ package SQL::Phrasebook;
 use strict;
 use warnings;
 
-use base qw(SQL::Phrasebook::Object::Singleton);
+use base qw(SQL::Phrasebook::Base);
 
 use SQL::Phrasebook::Query;
 use SQL::Phrasebook::Parser;
@@ -57,6 +57,28 @@ sub get_param_list {
     my ( $qparams, $q ) = @_;
     
     return map { ref $_ eq 'ARRAY' ? @$_ : $_ } @{ $qparams }{ @{ $q->{ params } } }
+}
+
+###############################################################################
+# Singleton stuff
+###############################################################################
+
+sub instance {
+    my $class = shift;
+
+    no strict 'refs';
+    my $instance = \${ "$class\::_instance" };
+    
+    return $$instance if defined $$instance;
+    
+    $$instance = $class->basic_new();
+    $$instance->initialize( @_ );
+    
+    return $$instance;
+}
+
+sub new {
+    return shift->instance( @_ );
 }
 
 1;
