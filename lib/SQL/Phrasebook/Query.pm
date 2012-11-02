@@ -41,8 +41,16 @@ sub execute {
 
     my $sth = $dbh->prepare_cached( $self->statement ) || die "Could not prepare statement";
 
-    $sth->execute( $self->params ) || die "Could not execute statement";
-
+    eval {
+        $sth->execute( $self->params ) || die "Could not execute statement";
+    };
+    if ($@) {
+        warn "execute statement failed";
+        warn  $self->statement;
+        warn join ' ,', map { defined $_ ? $_ : 'NULL' } $self->params;
+        die $@;
+    }
+    
     return $sth;
 }
 
